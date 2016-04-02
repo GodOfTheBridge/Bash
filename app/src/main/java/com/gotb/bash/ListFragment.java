@@ -51,7 +51,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     public void buildListDB() {
         List<Database> allText = Database.getText();
-        listAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, allText);
+        listAdapter = new ArrayAdapter<>(getContext(), R.layout.list_item, allText);
         lvDatabase.setAdapter(listAdapter);
     }
 
