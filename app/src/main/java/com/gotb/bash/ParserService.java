@@ -40,6 +40,7 @@ public class ParserService extends IntentService {
 
                     Boolean check = Database.checkDuplicate(postIdToDatabase);
                     if (!check){
+                        new NotificationMaker().showNotification(this);
                         Database saveInDatabase = new Database(textToDatabase, postIdToDatabase);
                         saveInDatabase.save();
                     }
