@@ -3,6 +3,8 @@ package com.gotb.bash;
 import android.app.IntentService;
 import android.content.Intent;
 
+import com.activeandroid.ActiveAndroid;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,6 +18,11 @@ public class ParserService extends IntentService {
         super("parseBashService");
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ActiveAndroid.initialize(this);
+    }
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -29,12 +36,21 @@ public class ParserService extends IntentService {
                     String postId = element.getElementsByClass("id").text().replaceAll("#", "");
                     int postIdToDatabase = Integer.parseInt(postId);
 
-                    System.out.println(textToDatabase);
-                    System.out.println(postIdToDatabase);
+                    Boolean check = Database.checkDuplicate(postIdToDatabase);
+                    if (!check){
+                        Database saveInDatabase = new Database(textToDatabase, postIdToDatabase);
+                        saveInDatabase.save();
+                    }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        sendMessage();
+    }
+
+    private void sendMessage() {
+        Intent intent = new Intent("receiveMessage");
+        sendBroadcast(intent);
     }
 }
