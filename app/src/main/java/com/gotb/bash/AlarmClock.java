@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 public class AlarmClock extends BroadcastReceiver {
 
@@ -13,7 +12,6 @@ public class AlarmClock extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i("myLog", "Alarm");
 
         Intent iStartService = new Intent(context, ParserService.class);
         context.startService(iStartService);
