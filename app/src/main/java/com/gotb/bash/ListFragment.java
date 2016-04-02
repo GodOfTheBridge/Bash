@@ -39,14 +39,13 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
         if (mSwipeRefreshLayout != null) {mSwipeRefreshLayout.setOnRefreshListener(this);}
 
+        serviceLaunch();
         return view;
     }
 
     @Override
     public void onRefresh() {
-        Intent iStartService = new Intent(getContext(), ParserService.class);
-        getContext().startService(iStartService);
-
+        serviceLaunch();
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
@@ -62,6 +61,11 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             buildListDB();
         }
     };
+
+    private void serviceLaunch(){
+        Intent intentAlarm = new Intent(getContext(), AlarmClock.class);
+        getContext().sendBroadcast(intentAlarm);
+    }
 
     @Override
     public void onStop() {

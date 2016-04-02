@@ -35,6 +35,10 @@
             android:exported="true"
             android:process=":parser"/>
 
+        <receiver
+            android:name=".AlarmClock"
+            android:enabled="true" />
+
 
     </application>
 

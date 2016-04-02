@@ -2,6 +2,7 @@ package com.gotb.bash;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 import com.activeandroid.ActiveAndroid;
 
@@ -22,6 +23,7 @@ public class ParserService extends IntentService {
     public void onCreate() {
         super.onCreate();
         ActiveAndroid.initialize(this);
+        Log.i("myLog", "Start Service");
     }
 
     @Override
