@@ -1,6 +1,7 @@
 package com.gotb.bash;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,11 +27,13 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
         if (mSwipeRefreshLayout != null) {mSwipeRefreshLayout.setOnRefreshListener(this);}
 
+
         return view;
     }
 
     @Override
     public void onRefresh() {
-
+        Intent iStartService = new Intent(getContext(), ParserService.class);
+        getContext().startService(iStartService);
     }
 }
