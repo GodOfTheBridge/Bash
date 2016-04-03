@@ -39,10 +39,13 @@ public class Database extends Model {
                 .exists();
     }
 
+    public static int getCount() {
+        return new Select().from(Database.class).count();
+    }
 
-    public static Cursor fetchResultCursor() {
+    public static Cursor fetchResultCursor(int count) {
         String tableName = Cache.getTableInfo(Database.class).getTableName();
-        String resultRecords = new Select(tableName + ".*").from(Database.class).orderBy("post_id DESC").limit(150).toSql();
+        String resultRecords = new Select(tableName + ".*").from(Database.class).orderBy("post_id DESC").limit(count).toSql();
         return Cache.openDatabase().rawQuery(resultRecords, null);
     }
 

@@ -25,8 +25,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     ListView lvDatabase;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    MySimpleCursorAdapter mySimpleCursorAdapter;
-    Cursor cursor;
+
 
     @Nullable
     @Override
@@ -52,11 +51,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     public void buildListDB() {
-        cursor = Database.fetchResultCursor();
-        String[] from = new String[] {"text", "date"};
-        int[] to = new int[] {R.id.tvForText, R.id.tvForDate };
-        mySimpleCursorAdapter = new MySimpleCursorAdapter(getContext(), R.layout.list_item, cursor, from, to, 0);
-        lvDatabase.setAdapter(mySimpleCursorAdapter);
+        lvDatabase.setOnScrollListener(new LazyScrollListener(getContext(), lvDatabase));
     }
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
