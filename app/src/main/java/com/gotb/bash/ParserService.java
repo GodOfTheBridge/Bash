@@ -10,6 +10,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ParserService extends IntentService {
 
     public final String URL_BASH = "http://bash.im/";
@@ -33,13 +36,19 @@ public class ParserService extends IntentService {
             for (Element element : elements) {
                 if (!element.getElementsByClass("id").text().equals("")) {
                     String textToDatabase = element.getElementsByClass("text").text().replaceAll("\\\\n", "\n");
+
                     String postId = element.getElementsByClass("id").text().replaceAll("#", "");
                     int postIdToDatabase = Integer.parseInt(postId);
+
+                    SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy HH:mm");
+                    String tempDate = element.getElementsByClass("date").text();
+                    Date date = format.parse(tempDate);
+                    long dateToDatabase = date.getTime();
 
                     Boolean check = Database.checkDuplicate(postIdToDatabase);
                     if (!check){
                         new NotificationMaker().showNotification(this);
-                        Database saveInDatabase = new Database(textToDatabase, postIdToDatabase);
+                        Database saveInDatabase = new Database(textToDatabase, postIdToDatabase, dateToDatabase);
                         saveInDatabase.save();
                     }
                 }
