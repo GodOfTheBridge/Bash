@@ -1,14 +1,13 @@
 package com.gotb.bash;
 
-import android.text.format.DateFormat;
+import android.database.Cursor;
 
+import com.activeandroid.Cache;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
-import java.util.Date;
-import java.util.List;
 
 
 @Table(name = "BashIm", id = "_id")
@@ -40,23 +39,11 @@ public class Database extends Model {
                 .exists();
     }
 
-    public static List<Database> getText() {
-        return new Select()
-                .from(Database.class)
-                .orderBy("post_id DESC")
-                .limit(150)
-                .execute();
+
+    public static Cursor fetchResultCursor() {
+        String tableName = Cache.getTableInfo(Database.class).getTableName();
+        String resultRecords = new Select(tableName + ".*").from(Database.class).orderBy("post_id DESC").limit(150).toSql();
+        return Cache.openDatabase().rawQuery(resultRecords, null);
     }
 
-    @Override
-    public String toString() {
-        String str = DateFormat.format("dd.MM.yy hh:mm", new Date(date)).toString();
-        if (str.equals("01.01.70 12:00")) {
-            str = "";
-
-        } else {
-            str = "Дата публикации: " + str + "\n\n";
-        }
-        return str  + text;
-    }
 }

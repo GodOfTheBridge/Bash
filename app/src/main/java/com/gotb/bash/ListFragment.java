@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,8 +24,9 @@ import java.util.List;
 public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
     ListView lvDatabase;
-    ListAdapter listAdapter;
     SwipeRefreshLayout mSwipeRefreshLayout;
+    MySimpleCursorAdapter mySimpleCursorAdapter;
+    Cursor cursor;
 
     @Nullable
     @Override
@@ -50,9 +52,11 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     public void buildListDB() {
-        List<Database> allText = Database.getText();
-        listAdapter = new ArrayAdapter<>(getContext(), R.layout.list_item, allText);
-        lvDatabase.setAdapter(listAdapter);
+        cursor = Database.fetchResultCursor();
+        String[] from = new String[] {"text", "date"};
+        int[] to = new int[] {R.id.tvForText, R.id.tvForDate };
+        mySimpleCursorAdapter = new MySimpleCursorAdapter(getContext(), R.layout.list_item, cursor, from, to, 0);
+        lvDatabase.setAdapter(mySimpleCursorAdapter);
     }
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
