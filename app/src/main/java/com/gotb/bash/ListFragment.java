@@ -50,14 +50,11 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    public void buildListDB() {
-        lvDatabase.setOnScrollListener(new LazyScrollListener(getContext(), lvDatabase));
-    }
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            buildListDB();
+            lvDatabase.setOnScrollListener(new LazyScrollListener(getContext(), lvDatabase));
         }
     };
 
